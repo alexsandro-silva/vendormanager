@@ -4,7 +4,6 @@ import br.com.arsilva.vendormanager.javaapi.models.Empresa;
 import br.com.arsilva.vendormanager.javaapi.resource.dto.EmpresaDto;
 import br.com.arsilva.vendormanager.javaapi.service.EmpresaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
