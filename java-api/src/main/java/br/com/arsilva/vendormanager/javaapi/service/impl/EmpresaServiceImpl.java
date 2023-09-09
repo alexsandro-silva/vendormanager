@@ -1,5 +1,6 @@
 package br.com.arsilva.vendormanager.javaapi.service.impl;
 
+import br.com.arsilva.vendormanager.javaapi.exceptions.EmpresaJaCadastraException;
 import br.com.arsilva.vendormanager.javaapi.exceptions.RecursoNaoEncontradoException;
 import br.com.arsilva.vendormanager.javaapi.models.Empresa;
 import br.com.arsilva.vendormanager.javaapi.models.Endereco;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmpresaServiceImpl implements EmpresaService {
@@ -19,9 +21,9 @@ public class EmpresaServiceImpl implements EmpresaService {
 
     @Override
     public Empresa cadastrarEmpresa(EmpresaDto empresaDto) {
-        Empresa empresa = buscarEmpresaPorCnpj(empresaDto.getCnpj());
-        if (empresa != null) {
-            throw new RuntimeException("Empresa já está cadastrada");
+        Optional<Empresa> empresa = empresaRepository.findByCnpj(empresaDto.getCnpj());
+        if (empresa.isPresent()) {
+            throw new EmpresaJaCadastraException("Empresa já está cadastrada");
         }
 
         Empresa emp = Empresa.builder()
@@ -78,6 +80,7 @@ public class EmpresaServiceImpl implements EmpresaService {
                         .build())
                 .build();
 
+        System.out.println(emp);
         return empresaRepository.save(emp);
     }
 

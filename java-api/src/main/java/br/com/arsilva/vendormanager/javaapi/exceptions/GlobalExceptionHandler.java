@@ -21,4 +21,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseHandler.generateResponse(apiError);
 
     }
+
+    @ExceptionHandler(EmpresaJaCadastraException.class)
+    public ResponseEntity<Object> handleConflictException(EmpresaJaCadastraException exception) {
+        ApiError apiError = new ApiError(LocalDateTime.now(), HttpStatus.CONFLICT, exception.getMessage());
+
+        return ResponseHandler.generateResponse(apiError);
+    }
+
 }
