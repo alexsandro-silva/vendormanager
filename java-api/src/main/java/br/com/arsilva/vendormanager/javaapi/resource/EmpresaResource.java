@@ -32,7 +32,7 @@ public class EmpresaResource {
         empresaService.excluirEmpresa(cnpj);
     }
 
-    @PutMapping("/cnpj/{cnpj}")
+    @PatchMapping("/cnpj/{cnpj}")
     public Empresa atualizarEmpresa(@PathVariable("cnpj") Integer cnpj, @RequestBody EmpresaDto empresaDto) {
         return empresaService.atualizarEmpresa(cnpj, empresaDto);
     }

@@ -69,6 +69,9 @@ public class EmpresaServiceImpl implements EmpresaService {
         });
 
         Empresa emp = Empresa.builder()
+                .cnpj(empresaDto.getCnpj())
+                .numeroFilial(empresaDto.getNumeroFilial())
+                .dv(empresaDto.getDv())
                 .nomeFantasia(empresaDto.getNomeFantasia())
                 .endereco(Endereco.builder()
                         .tipoLogradouro(empresaDto.getEndereco().getTipoLogradouro())

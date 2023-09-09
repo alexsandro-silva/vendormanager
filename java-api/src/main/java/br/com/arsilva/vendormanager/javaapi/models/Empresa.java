@@ -16,9 +16,9 @@ import javax.persistence.Id;
 @NoArgsConstructor
 public class Empresa {
     @Id
-    private Integer cnpj;
-    private Integer numeroFilial;
-    private Integer dv;
+    private String cnpj;
+    private String numeroFilial;
+    private String dv;
     private String nomeFantasia;
     @Embedded
     private Endereco endereco;
