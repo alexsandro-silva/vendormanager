@@ -10,7 +10,7 @@ public class ValidadorCnpjTest {
     public void validaNumerosRepetidos() {
         String cnpjInvalido = "11111111111111";
         boolean resultado = ValidadorCNPJ.validar(cnpjInvalido);
-        Assertions.assertEquals(false, resultado);
+        Assertions.assertFalse(resultado);
     }
 
     @Test

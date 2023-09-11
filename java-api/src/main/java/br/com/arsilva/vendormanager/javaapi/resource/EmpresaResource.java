@@ -22,9 +22,7 @@ public class EmpresaResource {
 
     @GetMapping("/cnpj/{cnpj}")
     public Empresa buscarEmpresa(@PathVariable("cnpj") String cnpj) {
-        Empresa empresa = empresaService.buscarEmpresaPorCnpj(cnpj);
-
-        return empresa;
+        return empresaService.buscarEmpresaPorCnpj(cnpj);
     }
 
     @DeleteMapping("/cnpj/{cnpj}")
