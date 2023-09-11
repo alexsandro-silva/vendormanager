@@ -21,19 +21,19 @@ public class EmpresaResource {
     }
 
     @GetMapping("/cnpj/{cnpj}")
-    public Empresa buscarEmpresa(@PathVariable("cnpj") Integer cnpj) {
+    public Empresa buscarEmpresa(@PathVariable("cnpj") String cnpj) {
         Empresa empresa = empresaService.buscarEmpresaPorCnpj(cnpj);
 
         return empresa;
     }
 
     @DeleteMapping("/cnpj/{cnpj}")
-    public void excluirEmpresa(@PathVariable("cnpj") Integer cnpj) {
+    public void excluirEmpresa(@PathVariable("cnpj") String cnpj) {
         empresaService.excluirEmpresa(cnpj);
     }
 
     @PatchMapping("/cnpj/{cnpj}")
-    public Empresa atualizarEmpresa(@PathVariable("cnpj") Integer cnpj, @RequestBody EmpresaDto empresaDto) {
+    public Empresa atualizarEmpresa(@PathVariable("cnpj") String cnpj, @RequestBody EmpresaDto empresaDto) {
         return empresaService.atualizarEmpresa(cnpj, empresaDto);
     }
 

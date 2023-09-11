@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface EmpresaService {
     Empresa cadastrarEmpresa(EmpresaDto empresaDto);
-    Empresa buscarEmpresaPorCnpj(Integer cnpj);
-    void excluirEmpresa(Integer cnpj);
-    Empresa atualizarEmpresa(Integer cnpj, EmpresaDto empresaDto);
+    Empresa buscarEmpresaPorCnpj(String cnpj);
+    void excluirEmpresa(String cnpj);
+    Empresa atualizarEmpresa(String cnpj, EmpresaDto empresaDto);
     List<Empresa> listarEmpresas();
 }

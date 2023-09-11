@@ -1,5 +1,6 @@
 package br.com.arsilva.vendormanager.javaapi.service.impl;
 
+import br.com.arsilva.vendormanager.javaapi.exceptions.DadosInvalidosException;
 import br.com.arsilva.vendormanager.javaapi.exceptions.EmpresaJaCadastraException;
 import br.com.arsilva.vendormanager.javaapi.exceptions.RecursoNaoEncontradoException;
 import br.com.arsilva.vendormanager.javaapi.models.Empresa;
@@ -7,6 +8,7 @@ import br.com.arsilva.vendormanager.javaapi.models.Endereco;
 import br.com.arsilva.vendormanager.javaapi.repository.EmpresaRepository;
 import br.com.arsilva.vendormanager.javaapi.resource.dto.EmpresaDto;
 import br.com.arsilva.vendormanager.javaapi.service.EmpresaService;
+import br.com.arsilva.vendormanager.javaapi.utilities.ValidadorCNPJ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,21 +23,26 @@ public class EmpresaServiceImpl implements EmpresaService {
 
     @Override
     public Empresa cadastrarEmpresa(EmpresaDto empresaDto) {
+
         Optional<Empresa> empresa = empresaRepository.findByCnpj(empresaDto.getCnpj());
         if (empresa.isPresent()) {
             throw new EmpresaJaCadastraException("Empresa já está cadastrada");
         }
 
+        boolean isCnpj = ValidadorCNPJ.validar(empresaDto.getCnpj());
+
+        if (!isCnpj)
+            throw new DadosInvalidosException("CNPJ inválido");
+
         Empresa emp = Empresa.builder()
                 .cnpj(empresaDto.getCnpj())
-                .numeroFilial(empresaDto.getNumeroFilial())
-                .dv(empresaDto.getDv())
                 .nomeFantasia(empresaDto.getNomeFantasia())
                 .endereco(Endereco.builder()
                         .tipoLogradouro(empresaDto.getEndereco().getTipoLogradouro())
                         .logradouro(empresaDto.getEndereco().getLogradouro())
                         .numero(empresaDto.getEndereco().getNumero())
                         .cep(empresaDto.getEndereco().getCep())
+                        .bairro(empresaDto.getEndereco().getBairro())
                         .cidade(empresaDto.getEndereco().getCidade())
                         .uf(empresaDto.getEndereco().getUf())
                         .build())
@@ -45,7 +52,7 @@ public class EmpresaServiceImpl implements EmpresaService {
     }
 
     @Override
-    public Empresa buscarEmpresaPorCnpj(Integer cnpj) {
+    public Empresa buscarEmpresaPorCnpj(String cnpj) {
         Empresa empresa = empresaRepository.findByCnpj(cnpj).orElseThrow(() ->
             new RecursoNaoEncontradoException("Empresa com CNPJ :" + cnpj + " não encontrada")
         );
@@ -54,7 +61,7 @@ public class EmpresaServiceImpl implements EmpresaService {
     }
 
     @Override
-    public void excluirEmpresa(Integer cnpj) {
+    public void excluirEmpresa(String cnpj) {
         Empresa empresa = empresaRepository.findByCnpj(cnpj).orElseThrow(() -> {
             return new RecursoNaoEncontradoException("Empresa não encontrada para o CNPJ " + cnpj);
         });
@@ -63,27 +70,25 @@ public class EmpresaServiceImpl implements EmpresaService {
     }
 
     @Override
-    public Empresa atualizarEmpresa(Integer cnpj, EmpresaDto empresaDto) {
+    public Empresa atualizarEmpresa(String cnpj, EmpresaDto empresaDto) {
         Empresa empresa = empresaRepository.findByCnpj(cnpj).orElseThrow(() -> {
-            return new RuntimeException("empresa não encontrada!");
+            return new RecursoNaoEncontradoException("empresa não encontrada!");
         });
 
         Empresa emp = Empresa.builder()
                 .cnpj(empresaDto.getCnpj())
-                .numeroFilial(empresaDto.getNumeroFilial())
-                .dv(empresaDto.getDv())
                 .nomeFantasia(empresaDto.getNomeFantasia())
                 .endereco(Endereco.builder()
                         .tipoLogradouro(empresaDto.getEndereco().getTipoLogradouro())
                         .logradouro(empresaDto.getEndereco().getLogradouro())
                         .numero(empresaDto.getEndereco().getNumero())
                         .cep(empresaDto.getEndereco().getCep())
+                        .bairro(empresaDto.getEndereco().getBairro())
                         .cidade(empresaDto.getEndereco().getCidade())
                         .uf(empresaDto.getEndereco().getUf())
                         .build())
                 .build();
 
-        System.out.println(emp);
         return empresaRepository.save(emp);
     }
 
