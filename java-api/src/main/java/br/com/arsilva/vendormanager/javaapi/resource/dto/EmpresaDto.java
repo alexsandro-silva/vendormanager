@@ -11,9 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class EmpresaDto {
-    private Integer cnpj;
-    private Integer numeroFilial;
-    private Integer dv;
+    private String cnpj;
     private String nomeFantasia;
     private Endereco endereco;
 }

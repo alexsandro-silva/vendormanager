@@ -17,8 +17,6 @@ import javax.persistence.Id;
 public class Empresa {
     @Id
     private String cnpj;
-    private String numeroFilial;
-    private String dv;
     private String nomeFantasia;
     @Embedded
     private Endereco endereco;
