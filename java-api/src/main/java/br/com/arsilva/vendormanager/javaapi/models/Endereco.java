@@ -13,7 +13,6 @@ import javax.persistence.Embeddable;
 @Embeddable
 @NoArgsConstructor
 public class Endereco {
-    private String tipoLogradouro;
     private String logradouro;
     private String numero;
     private String cep;

@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/vendormanager/empresa")
-public class EmpresaResource {
+public class EmpresaController {
 
     @Autowired
     private EmpresaService empresaService;

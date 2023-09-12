@@ -8,7 +8,7 @@ import br.com.arsilva.vendormanager.javaapi.models.Endereco;
 import br.com.arsilva.vendormanager.javaapi.repository.EmpresaRepository;
 import br.com.arsilva.vendormanager.javaapi.resource.dto.EmpresaDto;
 import br.com.arsilva.vendormanager.javaapi.service.EmpresaService;
-import br.com.arsilva.vendormanager.javaapi.utilities.ValidadorCNPJ;
+import br.com.arsilva.vendormanager.javaapi.utilities.Utilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +29,7 @@ public class EmpresaServiceImpl implements EmpresaService {
             throw new EmpresaJaCadastraException("Empresa já está cadastrada");
         }
 
-        boolean isCnpj = ValidadorCNPJ.validar(empresaDto.getCnpj());
+        boolean isCnpj = Utilities.validarCnpj(empresaDto.getCnpj());
 
         if (!isCnpj)
             throw new DadosInvalidosException("CNPJ inválido");
@@ -38,7 +38,6 @@ public class EmpresaServiceImpl implements EmpresaService {
                 .cnpj(empresaDto.getCnpj())
                 .nomeFantasia(empresaDto.getNomeFantasia())
                 .endereco(Endereco.builder()
-                        .tipoLogradouro(empresaDto.getEndereco().getTipoLogradouro())
                         .logradouro(empresaDto.getEndereco().getLogradouro())
                         .numero(empresaDto.getEndereco().getNumero())
                         .cep(empresaDto.getEndereco().getCep())
@@ -79,7 +78,6 @@ public class EmpresaServiceImpl implements EmpresaService {
                 .cnpj(empresaDto.getCnpj())
                 .nomeFantasia(empresaDto.getNomeFantasia())
                 .endereco(Endereco.builder()
-                        .tipoLogradouro(empresaDto.getEndereco().getTipoLogradouro())
                         .logradouro(empresaDto.getEndereco().getLogradouro())
                         .numero(empresaDto.getEndereco().getNumero())
                         .cep(empresaDto.getEndereco().getCep())

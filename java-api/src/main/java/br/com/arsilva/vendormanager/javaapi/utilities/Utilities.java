@@ -1,12 +1,15 @@
 package br.com.arsilva.vendormanager.javaapi.utilities;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.InputMismatchException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ValidadorCNPJ {
+public class Utilities {
 
-    public static boolean validar(String cnpj) {
+    public static boolean validarCnpj(String cnpj) {
         Pattern pattern = Pattern.compile("0{14}|1{14}|2{14}|3{14}|4{14}|5{14}|6{14}|7{14}|8{14}|9{14}");
         Matcher matcher = pattern.matcher(cnpj);
         if (matcher.find() || cnpj.length() != 14) {
@@ -64,5 +67,17 @@ public class ValidadorCNPJ {
             return (false);
         }
 
+    }
+
+    public static boolean isMenorIdade(Date dataNascimento) {
+        Date today = new Date();
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(today);
+        int currentYear = calendar.get(Calendar.YEAR);
+
+        calendar.setTime(dataNascimento);
+        int anoNascimento = calendar.get(Calendar.YEAR);
+
+        return ((currentYear - anoNascimento) < 18);
     }
 }
