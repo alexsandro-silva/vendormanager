@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 @AllArgsConstructor
@@ -22,6 +19,6 @@ public class Empresa {
     private String nomeFantasia;
     @Embedded
     private Endereco endereco;
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     List<Fornecedor> fornecedores;
 }

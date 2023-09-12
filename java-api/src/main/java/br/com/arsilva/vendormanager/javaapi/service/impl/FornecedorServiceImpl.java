@@ -5,6 +5,7 @@ import br.com.arsilva.vendormanager.javaapi.exceptions.DadosInvalidosException;
 import br.com.arsilva.vendormanager.javaapi.exceptions.FornecedorJaCadastradoException;
 import br.com.arsilva.vendormanager.javaapi.exceptions.FornecedorNaoEncontradoException;
 import br.com.arsilva.vendormanager.javaapi.exceptions.RecursoNaoEncontradoException;
+import br.com.arsilva.vendormanager.javaapi.models.Empresa;
 import br.com.arsilva.vendormanager.javaapi.models.Endereco;
 import br.com.arsilva.vendormanager.javaapi.models.Fornecedor;
 import br.com.arsilva.vendormanager.javaapi.repository.EmpresaRepository;
@@ -43,7 +44,13 @@ public class FornecedorServiceImpl implements FornecedorService {
             }
         }
 
+        Empresa empresa = empresaRepository.findByCnpj(fornecedorDto.getCnpjEmpresa()).orElseThrow(() -> {
+            return new RecursoNaoEncontradoException("Empresa não encontrada");
+        });
+
         Fornecedor newForn = Fornecedor.builder()
+                .cpfCnpj(fornecedorDto.getCpfCnpj())
+                .tipoPessoa(fornecedorDto.getTipoPessoa())
                 .nome(fornecedorDto.getNome())
                 .email(fornecedorDto.getEmail())
                 .rg(fornecedorDto.getTipoPessoa() == TipoPessoa.PESSOA_FISICA ? fornecedorDto.getRg() : "")
@@ -57,9 +64,7 @@ public class FornecedorServiceImpl implements FornecedorService {
                         .uf(fornecedorDto.getEndereco().getUf())
                         .build()
                 )
-                .empresa(empresaRepository.findByCnpj(fornecedorDto.getCnpjEmpresa()).orElseThrow(() -> {
-                    return new RecursoNaoEncontradoException("Empresa não encontrada");
-                }))
+                .empresa(empresa)
                 .build();
         return fornecedorRepository.save(newForn);
     }
