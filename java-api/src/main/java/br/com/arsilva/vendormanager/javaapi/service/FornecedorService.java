@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface FornecedorService {
     Fornecedor cadastrarFornecedor(FornecedorDto fornecedorDto);
+    Fornecedor adicionarFornecedor(String cnpjEmpresa, FornecedorDto fornecedorDto);
     Fornecedor buscarFornecedorPorCpfCnpj(String cpfCnpj);
     void excluirFornecedor(String cpfCnpj);
     Fornecedor atualizarFornecedor(String cpfCnpj, FornecedorDto fornecedorDto);

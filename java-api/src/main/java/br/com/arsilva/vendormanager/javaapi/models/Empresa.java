@@ -19,6 +19,18 @@ public class Empresa {
     private String nomeFantasia;
     @Embedded
     private Endereco endereco;
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY,
+        cascade = {
+            CascadeType.PERSIST, CascadeType.MERGE
+        })
+    @JoinTable(name = "empresa_fornecedores",
+            joinColumns = {@JoinColumn(name = "cnpj_empresa")},
+            inverseJoinColumns = {@JoinColumn(name = "cnpj_fornecedor")}
+    )
     List<Fornecedor> fornecedores;
+
+    public void adicionarFornecedor(Fornecedor fornecedor) {
+        this.getFornecedores().add(fornecedor);
+        fornecedor.getEmpresas().add(this);
+    }
 }

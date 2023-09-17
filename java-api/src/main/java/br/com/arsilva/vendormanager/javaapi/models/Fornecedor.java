@@ -29,7 +29,13 @@ public class Fornecedor {
     private Date dataNascimento;
     @Embedded
     private Endereco endereco;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST, CascadeType.MERGE
+            },
+            mappedBy = "fornecedores"
+    )
     @JsonIgnore
-    private Empresa empresa;
+    List<Empresa> empresas;
 }

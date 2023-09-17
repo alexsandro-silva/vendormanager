@@ -22,5 +22,4 @@ public class FornecedorDto {
     private String rg;
     private Date dataNascimento;
     private Endereco endereco;
-    private String cnpjEmpresa;
 }

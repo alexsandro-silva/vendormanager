@@ -5,7 +5,6 @@ import br.com.arsilva.vendormanager.javaapi.exceptions.DadosInvalidosException;
 import br.com.arsilva.vendormanager.javaapi.exceptions.FornecedorJaCadastradoException;
 import br.com.arsilva.vendormanager.javaapi.exceptions.FornecedorNaoEncontradoException;
 import br.com.arsilva.vendormanager.javaapi.exceptions.RecursoNaoEncontradoException;
-import br.com.arsilva.vendormanager.javaapi.models.Empresa;
 import br.com.arsilva.vendormanager.javaapi.models.Endereco;
 import br.com.arsilva.vendormanager.javaapi.models.Fornecedor;
 import br.com.arsilva.vendormanager.javaapi.repository.EmpresaRepository;
@@ -44,9 +43,9 @@ public class FornecedorServiceImpl implements FornecedorService {
             }
         }
 
-        Empresa empresa = empresaRepository.findByCnpj(fornecedorDto.getCnpjEmpresa()).orElseThrow(() -> {
-            return new RecursoNaoEncontradoException("Empresa não encontrada");
-        });
+//        Empresa empresa  = empresaRepository.findByCnpj(fornecedorDto.getCnpjEmpresa()).orElseThrow(() -> {
+//            return new RecursoNaoEncontradoException("Empresa não encontrada");
+//        });
 
         Fornecedor newForn = Fornecedor.builder()
                 .cpfCnpj(fornecedorDto.getCpfCnpj())
@@ -64,9 +63,44 @@ public class FornecedorServiceImpl implements FornecedorService {
                         .uf(fornecedorDto.getEndereco().getUf())
                         .build()
                 )
-                .empresa(empresa)
+//                .empresas(EmpresaFornecedor.builder().empresa(empresa).build())
                 .build();
         return fornecedorRepository.save(newForn);
+    }
+
+    @Override
+    public Fornecedor adicionarFornecedor(String cnpjEmpresa, FornecedorDto fornecedorDto) {
+        Fornecedor fornecedor = empresaRepository.findByCnpj(cnpjEmpresa).map(empresa -> {
+            Optional<Fornecedor> forn = fornecedorRepository.findByCpfCnpj(fornecedorDto.getCpfCnpj());
+            if (forn.isPresent()) {
+                empresa.adicionarFornecedor(forn.get());
+                empresaRepository.save(empresa);
+                return forn.get();
+            }
+
+            Fornecedor newForn = Fornecedor.builder()
+                    .cpfCnpj(fornecedorDto.getCpfCnpj())
+                    .tipoPessoa(fornecedorDto.getTipoPessoa())
+                    .nome(fornecedorDto.getNome())
+                    .email(fornecedorDto.getEmail())
+                    .rg(fornecedorDto.getTipoPessoa() == TipoPessoa.PESSOA_FISICA ? fornecedorDto.getRg() : "")
+                    .dataNascimento(fornecedorDto.getTipoPessoa() == TipoPessoa.PESSOA_FISICA ? fornecedorDto.getDataNascimento() : null)
+                    .endereco(Endereco.builder()
+                            .logradouro(fornecedorDto.getEndereco().getLogradouro())
+                            .numero(fornecedorDto.getEndereco().getNumero())
+                            .cep(fornecedorDto.getEndereco().getCep())
+                            .bairro(fornecedorDto.getEndereco().getBairro())
+                            .cidade(fornecedorDto.getEndereco().getCidade())
+                            .uf(fornecedorDto.getEndereco().getUf())
+                            .build()
+                    )
+                    .build();
+
+            empresa.adicionarFornecedor(newForn);
+            return fornecedorRepository.save(newForn);
+
+        }).orElseThrow(() -> new RecursoNaoEncontradoException(String.format("Não foi encontrada empresa para o CNPJ: %", cnpjEmpresa)));
+        return fornecedor;
     }
 
     @Override
@@ -115,9 +149,9 @@ public class FornecedorServiceImpl implements FornecedorService {
                         .uf(fornecedorDto.getEndereco().getUf())
                         .build()
                 )
-                .empresa(empresaRepository.findByCnpj(fornecedorDto.getCnpjEmpresa()).orElseThrow(() -> {
-                    return new RecursoNaoEncontradoException("Empresa não encontrada");
-                }))
+//                .empresa(empresaRepository.findByCnpj(fornecedorDto.getCnpjEmpresa()).orElseThrow(() -> {
+//                    return new RecursoNaoEncontradoException("Empresa não encontrada");
+//                }))
                 .build();
         return fornecedorRepository.save(fornecedor);
     }
