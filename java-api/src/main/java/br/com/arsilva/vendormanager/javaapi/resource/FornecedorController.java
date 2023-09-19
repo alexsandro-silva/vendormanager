@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/vendormanager/fornecedor")
+@RequestMapping("/vendormanager/api/fornecedor")
 public class FornecedorController {
 
     @Autowired
@@ -31,8 +31,8 @@ public class FornecedorController {
         fornecedorService.excluirFornecedor(cpfCnpj);
     }
 
-    @PatchMapping("/{cnpj}")
-    public Fornecedor atualizarFornecedor(@PathVariable("cpfCnpj") String cpfCnpj, FornecedorDto fornecedorDto) {
+    @PatchMapping("/{cpfCnpj}")
+    public Fornecedor atualizarFornecedor(@PathVariable("cpfCnpj") String cpfCnpj, @RequestBody FornecedorDto fornecedorDto) {
         return fornecedorService.atualizarFornecedor(cpfCnpj, fornecedorDto);
     }
 

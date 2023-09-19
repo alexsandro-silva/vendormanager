@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -27,7 +28,7 @@ public class Empresa {
             joinColumns = {@JoinColumn(name = "cnpj_empresa")},
             inverseJoinColumns = {@JoinColumn(name = "cnpj_fornecedor")}
     )
-    List<Fornecedor> fornecedores;
+    private final List<Fornecedor> fornecedores = new ArrayList<>();
 
     public void adicionarFornecedor(Fornecedor fornecedor) {
         this.getFornecedores().add(fornecedor);

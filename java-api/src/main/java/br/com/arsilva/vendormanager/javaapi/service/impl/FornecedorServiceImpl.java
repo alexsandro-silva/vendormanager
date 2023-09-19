@@ -100,6 +100,7 @@ public class FornecedorServiceImpl implements FornecedorService {
             return fornecedorRepository.save(newForn);
 
         }).orElseThrow(() -> new RecursoNaoEncontradoException(String.format("Não foi encontrada empresa para o CNPJ: %", cnpjEmpresa)));
+
         return fornecedor;
     }
 
@@ -136,6 +137,8 @@ public class FornecedorServiceImpl implements FornecedorService {
         }
 
         Fornecedor fornecedor = Fornecedor.builder()
+                .cpfCnpj(fornecedorDto.getCpfCnpj())
+                .tipoPessoa(fornecedorDto.getTipoPessoa())
                 .nome(fornecedorDto.getNome())
                 .email(fornecedorDto.getEmail())
                 .rg(fornecedorDto.getTipoPessoa() == TipoPessoa.PESSOA_FISICA ? fornecedorDto.getRg() : "")

@@ -3,12 +3,10 @@ package br.com.arsilva.vendormanager.javaapi.models;
 import br.com.arsilva.vendormanager.javaapi.enumerations.TipoPessoa;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,10 +30,23 @@ public class Fornecedor {
     @ManyToMany(
             fetch = FetchType.LAZY,
             cascade = {
-                    CascadeType.PERSIST, CascadeType.MERGE
+                    CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH
             },
             mappedBy = "fornecedores"
     )
     @JsonIgnore
-    List<Empresa> empresas;
+    private final List<Empresa> empresas = new ArrayList<>();
+
+    public void adicionarEmpresa(Empresa empresa) {
+        this.getEmpresas().add(empresa);
+        empresa.getFornecedores().add(this);
+    }
+
+    // remover da tabela de relacionamento
+    @PreRemove
+    private void removerRelacionamentoEmpresa() {
+        for (Empresa empresa : this.empresas) {
+            empresa.getFornecedores().remove(this);
+        }
+    }
 }
