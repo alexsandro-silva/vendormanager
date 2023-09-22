@@ -43,6 +43,15 @@ public class FornecedorServiceImpl implements FornecedorService {
             }
         }
 
+        boolean isValidDocument = (
+                (fornecedorDto.getTipoPessoa() == TipoPessoa.PESSOA_FISICA && Utilities.isValidCpf(fornecedorDto.getCpfCnpj()))
+                || (fornecedorDto.getTipoPessoa() == TipoPessoa.PESSOA_JURIDICA && Utilities.validarCnpj(fornecedorDto.getCpfCnpj()))
+        );
+
+        if (!isValidDocument) {
+            throw new DadosInvalidosException("Documento do fornecedor inválido");
+        }
+
 //        Empresa empresa  = empresaRepository.findByCnpj(fornecedorDto.getCnpjEmpresa()).orElseThrow(() -> {
 //            return new RecursoNaoEncontradoException("Empresa não encontrada");
 //        });
