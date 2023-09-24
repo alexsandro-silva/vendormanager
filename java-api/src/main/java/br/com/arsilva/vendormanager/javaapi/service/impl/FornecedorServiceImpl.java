@@ -36,7 +36,7 @@ public class FornecedorServiceImpl implements FornecedorService {
         }
 
         if (fornecedorDto.getTipoPessoa() == TipoPessoa.PESSOA_FISICA) {
-            AddressDto addressDto = CepWebService.getService().validaCep(fornecedorDto.getEndereco().getCep());
+            AddressDto addressDto = CepWebService.getService().getAddressFromCep(fornecedorDto.getEndereco().getCep());
 
             if (addressDto.uf.equals("PR") && Utilities.isMenorIdade(fornecedorDto.getDataNascimento())) {
                 throw new DadosInvalidosException("Fornecedor é menor de idade");
@@ -45,16 +45,12 @@ public class FornecedorServiceImpl implements FornecedorService {
 
         boolean isValidDocument = (
                 (fornecedorDto.getTipoPessoa() == TipoPessoa.PESSOA_FISICA && Utilities.isValidCpf(fornecedorDto.getCpfCnpj()))
-                || (fornecedorDto.getTipoPessoa() == TipoPessoa.PESSOA_JURIDICA && Utilities.validarCnpj(fornecedorDto.getCpfCnpj()))
+                || (fornecedorDto.getTipoPessoa() == TipoPessoa.PESSOA_JURIDICA && Utilities.isValidCnpj(fornecedorDto.getCpfCnpj()))
         );
 
         if (!isValidDocument) {
             throw new DadosInvalidosException("Documento do fornecedor inválido");
         }
-
-//        Empresa empresa  = empresaRepository.findByCnpj(fornecedorDto.getCnpjEmpresa()).orElseThrow(() -> {
-//            return new RecursoNaoEncontradoException("Empresa não encontrada");
-//        });
 
         Fornecedor newForn = Fornecedor.builder()
                 .cpfCnpj(fornecedorDto.getCpfCnpj())
@@ -72,7 +68,6 @@ public class FornecedorServiceImpl implements FornecedorService {
                         .uf(fornecedorDto.getEndereco().getUf())
                         .build()
                 )
-//                .empresas(EmpresaFornecedor.builder().empresa(empresa).build())
                 .build();
         return fornecedorRepository.save(newForn);
     }
@@ -138,7 +133,7 @@ public class FornecedorServiceImpl implements FornecedorService {
         });
 
         if (fornecedorDto.getTipoPessoa() == TipoPessoa.PESSOA_FISICA) {
-            AddressDto addressDto = CepWebService.getService().validaCep(fornecedorDto.getEndereco().getCep());
+            AddressDto addressDto = CepWebService.getService().getAddressFromCep(fornecedorDto.getEndereco().getCep());
 
             if (addressDto.uf.equals("PR") && Utilities.isMenorIdade(fornecedorDto.getDataNascimento())) {
                 throw new DadosInvalidosException("Fornecedor é menor de idade");
@@ -161,9 +156,6 @@ public class FornecedorServiceImpl implements FornecedorService {
                         .uf(fornecedorDto.getEndereco().getUf())
                         .build()
                 )
-//                .empresa(empresaRepository.findByCnpj(fornecedorDto.getCnpjEmpresa()).orElseThrow(() -> {
-//                    return new RecursoNaoEncontradoException("Empresa não encontrada");
-//                }))
                 .build();
         return fornecedorRepository.save(fornecedor);
     }

@@ -10,7 +10,7 @@ public class ValidadorCepTest {
     @Test
     public void validaCep() {
         String cep = "50670260";
-        AddressDto addressDto = CepWebService.getService().validaCep(cep);
+        AddressDto addressDto = CepWebService.getService().getAddressFromCep(cep);
         Assertions.assertNotNull(addressDto);
     }
 }

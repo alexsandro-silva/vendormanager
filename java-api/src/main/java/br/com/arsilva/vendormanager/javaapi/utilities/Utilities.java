@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class Utilities {
 
-    public static boolean validarCnpj(String cnpj) {
+    public static boolean isValidCnpj(String cnpj) {
         Pattern pattern = Pattern.compile("0{14}|1{14}|2{14}|3{14}|4{14}|5{14}|6{14}|7{14}|8{14}|9{14}");
         Matcher matcher = pattern.matcher(cnpj);
         if (matcher.find() || cnpj.length() != 14) {

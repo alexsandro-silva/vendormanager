@@ -9,7 +9,7 @@ public class ValidadorCnpjTest {
     @Test
     public void validaNumerosRepetidos() {
         String cnpjInvalido = "11111111111111";
-        boolean resultado = Utilities.validarCnpj(cnpjInvalido);
+        boolean resultado = Utilities.isValidCnpj(cnpjInvalido);
         Assertions.assertFalse(resultado);
     }
 
@@ -17,7 +17,7 @@ public class ValidadorCnpjTest {
     public void validaTamanhoCnpj() {
         String mockCnpj = "90876567000112";
         boolean esperado = false;
-        boolean resultado = Utilities.validarCnpj(mockCnpj);
+        boolean resultado = Utilities.isValidCnpj(mockCnpj);
         Assertions.assertEquals(esperado, resultado);
     }
 
@@ -25,7 +25,7 @@ public class ValidadorCnpjTest {
     public void validaCnpjValido() {
         String mockCnpj = "08334818000314";
         boolean esperado = true;
-        boolean resultado = Utilities.validarCnpj(mockCnpj);
+        boolean resultado = Utilities.isValidCnpj(mockCnpj);
         Assertions.assertEquals(esperado, resultado);
     }
 }

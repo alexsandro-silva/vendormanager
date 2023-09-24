@@ -4,7 +4,6 @@ import br.com.arsilva.vendormanager.javaapi.web.external.api.dto.AddressDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -31,14 +30,14 @@ public class CepWebService {
         }
     }
 
-    public AddressDto validaCep(String cep) {
+    public AddressDto getAddressFromCep(String cep) {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(java.net.URI.create(String.format(this.URI, cep)))
+                .uri(java.net.URI.create(String.format(URI, cep)))
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
 
-        HttpResponse<String> response = null;
-        AddressDto addressDto = null;
+        HttpResponse<String> response;
+        AddressDto addressDto;
 
         try {
             response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());

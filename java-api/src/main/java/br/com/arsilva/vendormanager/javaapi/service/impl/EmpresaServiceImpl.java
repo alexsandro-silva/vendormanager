@@ -29,7 +29,7 @@ public class EmpresaServiceImpl implements EmpresaService {
             throw new EmpresaJaCadastraException("Empresa já está cadastrada");
         }
 
-        boolean isCnpj = Utilities.validarCnpj(empresaDto.getCnpj());
+        boolean isCnpj = Utilities.isValidCnpj(empresaDto.getCnpj());
 
         if (!isCnpj)
             throw new DadosInvalidosException("CNPJ inválido");
